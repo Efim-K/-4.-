@@ -12,7 +12,7 @@ class API(ABC):
         pass
 
 
-class HH(API):
+class HeadHunterAPI(API):
     """
     Класс для работы с API HeadHunter
     """
