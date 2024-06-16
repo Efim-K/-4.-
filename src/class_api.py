@@ -33,6 +33,3 @@ class HH(API):
             vacancies = response.json()['items']
             self.vacancies.extend(vacancies)
             self.params['page'] += 1
-
-
-
