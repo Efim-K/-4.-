@@ -68,7 +68,7 @@ class Vacancy:
         """
         salary = f'Зарплата: от {self.__salary_from} до {self.__salary_to} {self.__currency}'
         return (f'Должность: {self.__name}\n'
-                f'Дата публикации: {__published_at}\n'
+                f'Дата публикации: {self.__published_at}\n'
                 f'Ссылка на вакансию: {self.__alternate_url}\n'
                 f'Город: {self.__area}\n'
                 f'{salary}\n'
@@ -96,15 +96,18 @@ class Vacancy:
 
     @classmethod
     def create_vacancy(cls, vacancy_data):
-        cls(__pk=vacancy_data.get('id'),
-            __published_at=vacancy_data.get('published_at'),
-            __name=vacancy_data.get('name'),
-            __alternate_url=vacancy_data.get('alternate_url'),
-            __area=vacancy_data.get('area').get('name'),
-            __currency=vacancy_data.get('salary').get('currency'),
-            __salary_from=vacancy_data.get("salary").get("from"),
-            __salary_to=vacancy_data.get("salary").get("to"),
-            __schedule=vacancy_data.get("schedule").get("name"),
-            __requirement=vacancy_data.get('snippet').get('requirement'),
-            __responsibility=vacancy_data["snippet"]["responsibility"]
-            )
+        """
+        Инициализация класса вакансий
+        """
+        return cls(__pk=vacancy_data.get('id'),
+                   __published_at=vacancy_data.get('published_at'),
+                   __name=vacancy_data.get('name'),
+                   __alternate_url=vacancy_data.get('alternate_url'),
+                   __area=vacancy_data.get('area').get('name'),
+                   __currency=vacancy_data.get('salary').get('currency'),
+                   __salary_from=vacancy_data.get("salary").get("from"),
+                   __salary_to=vacancy_data.get("salary").get("to"),
+                   __schedule=vacancy_data.get("schedule").get("name"),
+                   __requirement=vacancy_data.get('snippet').get('requirement'),
+                   __responsibility=vacancy_data["snippet"]["responsibility"]
+                   )
