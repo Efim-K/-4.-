@@ -6,3 +6,6 @@ DATA_PATH = ROOT_PATH.joinpath('data')
 FILE_PATH_JSON = DATA_PATH.joinpath('vacancies.json')
 FILE_PATH_SELECT = DATA_PATH.joinpath('vacancies_select.json')
 HH_URL = 'https://api.hh.ru/vacancies'
+
+FORMAT = '%(asctime)s %(message)s'
+logging.basicConfig(filename='myapp.log', level=logging.INFO, filemode='a', format=FORMAT)
