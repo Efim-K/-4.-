@@ -31,13 +31,14 @@ class HeadHunterAPI(API):
         """
         vacancies = []
         self.__params['text'] = user_keyword
-        response = requests.get(self.__url, params=self.__params)
 
+        response = requests.get(self.__url, params=self.__params)
         is_allowed = self.__check_status(response)
         if not is_allowed:
             raise HeadHunterAPIException(f'Ошибка заброса данных:{response.status_code}, {response.text} ')
         try:
             while self.__params.get('page') != response.json()['pages']:
+                response = requests.get(self.__url, params=self.__params)
                 vacancy = response.json()['items']
                 vacancies.extend(vacancy)
                 self.__params['page'] += 1
