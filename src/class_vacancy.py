@@ -49,19 +49,19 @@ class Vacancy:
         """
         Cравнение зарплат вакансий на больше
         """
-        return self._salary_to > other._salary_to
+        return self._salary_from > other._salary_from
 
     def __lt__(self, other):
         """
         Cравнение зарплат вакансий на меньше
         """
-        return self._salary_to < other._salary_to
+        return self._salary_from < other._salary_from
 
     def __eq__(self, other):
         """
         Cравнение зарплат вакансий на равенство
         """
-        return self._salary_to == other._salary_to
+        return self._salary_from == other._salary_from
 
     def __str__(self) -> str:
         """
