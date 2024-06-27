@@ -100,15 +100,28 @@ class Vacancy:
         """
         Инициализация класса вакансий
         """
+        currency = 'Нет информации'
+        vacancy_from = 0
+        vacancy_to = 0
+
+        if vacancy_data.get('salary'):
+            if vacancy_data.get('salary').get('currency'):
+                currency = vacancy_data.get('salary').get('currency')
+
+            if vacancy_data.get('salary').get('from'):
+                vacancy_from = vacancy_data.get('salary').get('from')
+
+            if vacancy_data.get('salary').get('to'):
+                vacancy_to = vacancy_data.get('salary').get('to')
 
         return cls(_pk=vacancy_data.get('id'),
                    _published_at=vacancy_data.get('published_at'),
                    _name=vacancy_data.get('name'),
                    _alternate_url=vacancy_data.get('alternate_url'),
                    _area=vacancy_data.get('area').get('name'),
-                   _currency=vacancy_data.get('salary').get('currency'),
-                   _salary_from=vacancy_data.get('salary').get('from'),
-                   _salary_to=vacancy_data.get('salary').get('to'),
+                   _currency=currency,
+                   _salary_from=vacancy_from,
+                   _salary_to=vacancy_to,
                    _schedule=vacancy_data.get('schedule').get('name'),
                    _requirement=vacancy_data.get('snippet').get('requirement'),
                    _responsibility=vacancy_data.get('snippet').get('responsibility')
