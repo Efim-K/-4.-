@@ -2,33 +2,34 @@ class Vacancy:
     """
     Класс обработки вакансии
     """
-    __slots__ = ('__pk', '__published_at', '__name', '__alternate_url', '__area', '__currency', '__salary_from',
-                 '__salary_to', '__schedule', '__requirement', '__responsibility')
 
-    def __init__(self, __pk, __published_at, __name, __alternate_url, __area, __currency, __salary_from,
-                 __salary_to, __schedule, __requirement, __responsibility):
+    __slots__ = ('_pk', '_published_at', '_name', '_alternate_url', '_area', '_currency',
+                 '_salary_from', '_salary_to', '_schedule', '_requirement', '_responsibility')
+
+    def __init__(self, _pk, _published_at, _name, _alternate_url, _area, _currency, _salary_from,
+                 _salary_to, _schedule, _requirement, _responsibility):
         # Идентификационный номер
-        self.__pk = __pk
+        self._pk = _pk
         # Дата публикации
-        self.__published_at = self.validate_field_str(__published_at)
+        self._published_at = self.validate_field_str(_published_at)
         # Название вакансии
-        self.__name = self.validate_field_str(__name)
+        self._name = self.validate_field_str(_name)
         # Ссылка на вакансию
-        self.__alternate_url = self.validate_field_str(__alternate_url)
+        self._alternate_url = self.validate_field_str(_alternate_url)
         # место работы
-        self.__area = self.validate_field_str(__area)
+        self._area = self.validate_field_str(_area)
         # Валюта
-        self.__currency = self.validate_field_str(__currency)
+        self._currency = self.validate_field_str(_currency)
         # Зарплата "от"
-        self.__salary_from = self.validate_salary(__salary_from)
+        self._salary_from = self.validate_salary(_salary_from)
         # Зарплата "до"
-        self.__salary_to = self.validate_salary(__salary_to)
+        self._salary_to = self.validate_salary(_salary_to)
         # График работы
-        self.__schedule = self.validate_field_str(__schedule)
+        self._schedule = self.validate_field_str(_schedule)
         # Требования
-        self.__requirement = self.validate_field_str(__requirement)
+        self._requirement = self.validate_field_str(_requirement)
         # Обязанности
-        self.__responsibility = self.validate_field_str(__responsibility)
+        self._responsibility = self.validate_field_str(_responsibility)
 
     @staticmethod
     def validate_field_str(field):
@@ -48,50 +49,50 @@ class Vacancy:
         """
         Cравнение зарплат вакансий на больше
         """
-        return self.__salary_to > other.__salary_to
+        return self._salary_to > other._salary_to
 
     def __lt__(self, other):
         """
         Cравнение зарплат вакансий на меньше
         """
-        return self.__salary_to < other.__salary_to
+        return self._salary_to < other._salary_to
 
     def __eq__(self, other):
         """
         Cравнение зарплат вакансий на равенство
         """
-        return self.__salary_to == other.__salary_to
+        return self._salary_to == other._salary_to
 
     def __str__(self) -> str:
         """
         Вывод пользователю информации о вакансии
         """
-        salary = f'Зарплата: от {self.__salary_from} до {self.__salary_to} {self.__currency}'
-        return (f'Должность: {self.__name}\n'
-                f'Дата публикации: {self.__published_at}\n'
-                f'Ссылка на вакансию: {self.__alternate_url}\n'
-                f'Город: {self.__area}\n'
+        salary = f'Зарплата: от {self._salary_from} до {self._salary_to} {self._currency}'
+        return (f'Должность: {self._name}\n'
+                f'Дата публикации: {self._published_at}\n'
+                f'Ссылка на вакансию: {self._alternate_url}\n'
+                f'Город: {self._area}\n'
                 f'{salary}\n'
-                f'График работы: {self.__schedule}\n'
-                f'Требования к кандидату: {self.__requirement}\n'
-                f'Обязанности: {self.__responsibility}\n\n')
+                f'График работы: {self._schedule}\n'
+                f'Требования к кандидату: {self._requirement}\n'
+                f'Обязанности: {self._responsibility}\n\n')
 
     def __repr__(self):
         """
         Отладочный вывод класса и атрибутов класса
         """
         return (f"""{self.__class__.__name__}
-                {self.__pk},
-                {self.__published_at},
-                {self.__name},
-                {self.__alternate_url},
-                {self.__area},
-                {self.__currency},
-                {self.__salary_from},
-                {self.__salary_to},
-                {self.__schedule},
-                {self.__requirement},
-                {self.__responsibility}
+                {self._pk},
+                {self._published_at},
+                {self._name},
+                {self._alternate_url},
+                {self._area},
+                {self._currency},
+                {self._salary_from},
+                {self._salary_to},
+                {self._schedule},
+                {self._requirement},
+                {self._responsibility}
         """)
 
     @classmethod
@@ -99,15 +100,16 @@ class Vacancy:
         """
         Инициализация класса вакансий
         """
-        return cls(__pk=vacancy_data.get('id'),
-                   __published_at=vacancy_data.get('published_at'),
-                   __name=vacancy_data.get('name'),
-                   __alternate_url=vacancy_data.get('alternate_url'),
-                   __area=vacancy_data.get('area').get('name'),
-                   __currency=vacancy_data.get('salary').get('currency'),
-                   __salary_from=vacancy_data.get("salary").get("from"),
-                   __salary_to=vacancy_data.get("salary").get("to"),
-                   __schedule=vacancy_data.get("schedule").get("name"),
-                   __requirement=vacancy_data.get('snippet').get('requirement'),
-                   __responsibility=vacancy_data["snippet"]["responsibility"]
+
+        return cls(_pk=vacancy_data.get('id'),
+                   _published_at=vacancy_data.get('published_at'),
+                   _name=vacancy_data.get('name'),
+                   _alternate_url=vacancy_data.get('alternate_url'),
+                   _area=vacancy_data.get('area').get('name'),
+                   _currency=vacancy_data.get('salary').get('currency'),
+                   _salary_from=vacancy_data.get('salary').get('from'),
+                   _salary_to=vacancy_data.get('salary').get('to'),
+                   _schedule=vacancy_data.get('schedule').get('name'),
+                   _requirement=vacancy_data.get('snippet').get('requirement'),
+                   _responsibility=vacancy_data.get('snippet').get('responsibility')
                    )
