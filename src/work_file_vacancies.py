@@ -37,9 +37,9 @@ class WorkFileVacancies(VacanciesABC):
             with open(FILE_PATH_JSON, "w+", encoding="utf8"):
                 return []
 
-    def save_vacancies(self, vacancies: list[Vacancy]) -> None:
+    def merging_lists_vacancies(self, vacancies: list[Vacancy]) -> list[dict]:
         """
-        Добавление вакансий формата JSON в файл
+        Объединение данные по вакансиям нового запроса пользователя с предыдущей историей
         """
         # Загрузка старых данных с вакансиями
         old_vacancies = self.read_vacancies()
@@ -52,8 +52,17 @@ class WorkFileVacancies(VacanciesABC):
         # Объединяем словари
         all_instances.extend(old_vacancies)
 
+        return all_instances
+
+    def save_vacancies(self, vacancies: list[Vacancy]) -> None:
+        """
+        Добавление вакансий формата JSON в файл
+        """
+        # Объединение старых данных с  новыми вакансиями
+        new_vacancies = self.merging_lists_vacancies(vacancies)
+
         with open(FILE_PATH_JSON, "w", encoding="utf8") as f:
-            json.dump(all_instances, f, ensure_ascii=False, indent=4)
+            json.dump(new_vacancies, f, ensure_ascii=False, indent=4)
 
     def del_vacancies(self) -> None:
         """
