@@ -6,8 +6,8 @@ class Vacancy:
     __slots__ = ('__pk', '__published_at', '__name', '__alternate_url', '__area', '__currency',
                  '__salary_from', '__salary_to', '__schedule', '__requirement', '__responsibility')
 
-    def __init__(self, pk, published_at, name, alternate_url, area, currency, salary_from,
-                 salary_to, schedule, requirement, responsibility):
+    def __init__(self, pk: str, published_at: str, name: str, alternate_url: str, area: str, currency: str,
+                 salary_from: int, salary_to: int, schedule: str, requirement: str, responsibility: str) -> None:
         # Идентификационный номер
         self.__pk = pk
         # Дата публикации
@@ -32,38 +32,38 @@ class Vacancy:
         self.__responsibility = self.validate_field_str(responsibility)
 
     @property
-    def pk(self):
+    def pk(self) -> str:
         return self.__pk
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self.__name
 
     @property
-    def currency(self):
+    def currency(self) -> str:
         return self.__currency
 
     @property
-    def area(self):
+    def area(self) -> str:
         return self.__area
 
     @property
-    def requirement(self):
+    def requirement(self) -> str:
         return self.__requirement
 
     @property
-    def responsibility(self):
+    def responsibility(self) -> str:
         return self.__responsibility
 
     @staticmethod
-    def validate_field_str(field):
+    def validate_field_str(field) -> str:
         """
         Проверка корректности текстовых данных
         """
         return field if field is not None else 'Нет информации'
 
     @staticmethod
-    def validate_salary(salary):
+    def validate_salary(salary) -> int:
         """
         Проверка корректности данных зарплат
         """
@@ -81,12 +81,6 @@ class Vacancy:
         """
         return self.__salary_from < other.__salary_from
 
-    def __eq__(self, other):
-        """
-        Cравнение зарплат вакансий на равенство
-        """
-        return self.__salary_from == other.__salary_from
-
     def __str__(self) -> str:
         """
         Вывод пользователю информации о вакансии
@@ -101,7 +95,7 @@ class Vacancy:
                 f'Требования к кандидату: {self.__requirement}\n'
                 f'Обязанности: {self.__responsibility}\n\n')
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """
         Отладочный вывод класса и атрибутов класса
         """
@@ -120,7 +114,7 @@ class Vacancy:
         """)
 
     @classmethod
-    def create_vacancy(cls, vacancy_data):
+    def create_vacancy(cls, vacancy_data: dict):
         """
         Инициализация класса вакансий
         """
@@ -150,3 +144,21 @@ class Vacancy:
                    requirement=vacancy_data.get('snippet').get('requirement'),
                    responsibility=vacancy_data.get('snippet').get('responsibility')
                    )
+
+    def to_dict(self) -> dict:
+        """
+        Представление данных типа вакансий в формате словаря
+        """
+        return {
+            'pk': self.__pk,
+            'published_at': self.__published_at,
+            'name': self.__name,
+            'alternate_url': self.__alternate_url,
+            'area': self.__area,
+            'currency': self.__currency,
+            'salary_from': self.__salary_from,
+            'salary_to': self.__salary_to,
+            'schedule': self.__schedule,
+            'requirement': self.__requirement,
+            'responsibility': self.__responsibility,
+        }
