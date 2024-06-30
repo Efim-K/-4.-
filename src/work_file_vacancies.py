@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 
 from settings import FILE_PATH_JSON
 from src.class_vacancy import Vacancy
-from src.utils import get_vacancies_instances
+
 
 
 class VacanciesABC(ABC):
@@ -26,7 +26,7 @@ class WorkFileVacancies(VacanciesABC):
     Чтение и запись данных вакансий в файл, выбранные пользователем
     """
 
-    def read_vacancies(self) -> json:
+    def read_vacancies(self) -> list[dict]:
         """
         Чтение вакансий из файла
         """
@@ -44,7 +44,7 @@ class WorkFileVacancies(VacanciesABC):
         # Загрузка старых данных с вакансиями
         old_vacancies = self.read_vacancies()
         # Преобразование списка словарей вакансий в список класса Вакансий
-        old_instances = get_vacancies_instances(old_vacancies)
+        old_instances = [Vacancy.create_vacancy(vacancy) for vacancy in old_vacancies]
         # Получаем список id, ранее найденных вакансий
         old_ids = [instance.pk for instance in old_instances]
         # Преобразуем новые вакансии из списка типа Вакансий в список из словарей
@@ -58,7 +58,7 @@ class WorkFileVacancies(VacanciesABC):
         """
         Добавление вакансий формата JSON в файл
         """
-        # Объединение старых данных с  новыми вакансиями
+        # Объединение старых данных с новыми вакансиями
         new_vacancies = self.merging_lists_vacancies(vacancies)
 
         with open(FILE_PATH_JSON, "w", encoding="utf8") as f:
