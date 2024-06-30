@@ -26,7 +26,7 @@ class WorkFileVacancies(VacanciesABC):
     Чтение и запись данных вакансий в файл, выбранные пользователем
     """
 
-    def read_vacancies(self) -> list[dict]:
+    def read_vacancies(self) -> json:
         """
         Чтение вакансий из файла
         """
@@ -35,6 +35,7 @@ class WorkFileVacancies(VacanciesABC):
                 return json.load(f)
         except FileNotFoundError:
             with open(FILE_PATH_JSON, "w+", encoding="utf8"):
+                json.dump([], f, ensure_ascii=False, indent=4)
                 return []
 
     def merging_lists_vacancies(self, vacancies: list[Vacancy]) -> list[dict]:
@@ -68,5 +69,5 @@ class WorkFileVacancies(VacanciesABC):
         """
         Удаление данных из файла
         """
-        with open(FILE_PATH_JSON, "w"):
-            pass
+        with open(FILE_PATH_JSON, "w") as f:
+            json.dump([], f, ensure_ascii=False, indent=4)
