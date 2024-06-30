@@ -5,11 +5,10 @@ from settings import FILE_PATH_JSON
 from src.class_vacancy import Vacancy
 
 
-
-class VacanciesABC(ABC):
+class WorkFile(ABC):
 
     @abstractmethod
-    def read_vacancies(self) -> json:
+    def read_vacancies(self) -> list[dict]:
         pass
 
     @abstractmethod
@@ -21,12 +20,12 @@ class VacanciesABC(ABC):
         pass
 
 
-class WorkFileVacancies(VacanciesABC):
+class WorkFileVacancies(WorkFile):
     """
     Чтение и запись данных вакансий в файл, выбранные пользователем
     """
 
-    def read_vacancies(self) -> json:
+    def read_vacancies(self) -> list[dict]:
         """
         Чтение вакансий из файла
         """
