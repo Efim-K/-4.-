@@ -34,19 +34,20 @@ class WorkFileVacancies(WorkFile):
                 return json.load(f)
         except FileNotFoundError:
             with open(FILE_PATH_JSON, "w+", encoding="utf8"):
-                json.dump([], f, ensure_ascii=False, indent=4)
                 return []
+        except json.JSONDecodeError:
+            return []
 
     def merging_lists_vacancies(self, vacancies: list[Vacancy]) -> list[dict]:
         """
         Объединение данные по вакансиям нового запроса пользователя с предыдущей историей
         """
+
         # Загрузка старых данных с вакансиями
         old_vacancies = self.read_vacancies()
-        # Преобразование списка словарей вакансий в список класса Вакансий
-        old_instances = [Vacancy.create_vacancy(vacancy) for vacancy in old_vacancies]
+
         # Получаем список id, ранее найденных вакансий
-        old_ids = [instance.pk for instance in old_instances]
+        old_ids = [instance.get('pk') for instance in old_vacancies]
         # Преобразуем новые вакансии из списка типа Вакансий в список из словарей
         all_instances = [vacancy.to_dict() for vacancy in vacancies if vacancy.pk not in old_ids]
         # Объединяем словари
@@ -68,5 +69,5 @@ class WorkFileVacancies(WorkFile):
         """
         Удаление данных из файла
         """
-        with open(FILE_PATH_JSON, "w") as f:
-            json.dump([], f, ensure_ascii=False, indent=4)
+        with open(FILE_PATH_JSON, "w"):
+            pass

@@ -5,9 +5,16 @@ from src.class_vacancy import Vacancy
 
 def get_vacancies_instances(vacancies: list[dict]) -> list[Vacancy]:
     """
-    Преобразование списка словарей в список класса вакансий
+    Преобразование списка словарей из интернета в список класса вакансий
     """
     return [Vacancy.create_vacancy(vacancy) for vacancy in vacancies]
+
+
+def to_vacancy_from_dict(vacancies: list[dict]) -> list[Vacancy]:
+    """
+    Преобразование измененного списка словарей обратно в список класса вакансий
+    """
+    return [Vacancy(*vacancy.values()) for vacancy in vacancies]
 
 
 def sort_vacancies(vacancies: list[Vacancy]) -> list[Vacancy]:
@@ -43,9 +50,8 @@ def get_numbers_vacancies(vacancies: list[Vacancy]) -> list[Vacancy]:
         print('Число не задано. Будут выбраны все вакансии\n')
         return vacancies
 
-    if numbers > len(vacancies):
-        print(f'Всего найдено {len(vacancies)} вакансий.\n')
-    print('\n')
+    print(f'Всего найдено {len(vacancies)} вакансий.\n'
+          f'Ниже показаны {numbers} ТОП вакансий по зарплате:\n\n')
 
     return [(vacancies[i]) for i in range(len(vacancies)) if i < numbers]
 
@@ -89,14 +95,22 @@ def user_interaction():
     vacancies_list = hh.load_vacancies(user_vacancy)
 
     # Преобразование списка словарей вакансий в список класса Вакансий
-    user_vacancy_list = get_vacancies_instances(vacancies_list)
+    user_vacancy_list = []
+    try:
+        user_vacancy_list = get_vacancies_instances(vacancies_list)
+    except AttributeError:
+        # Ошибка обращения к списку загруженных с сайта вакансий.
+        if delete_vacancy not in ('да', 'yes', 'y', 'д'):
+            print('Вакансии не найдены\n')
+        else:
+            return print('Вакансии не найдены\n')
 
     # Загрузка данных из предыдущих поисков
     if delete_vacancy not in ('да', 'yes', 'y', 'д'):
         use_history = input('Использовать историю предыдущих поисков вакансий? да/нет : \n').lower()
         if use_history in ('да', 'yes', 'y', 'д'):
             user_vacancy_list_dict = json_file.merging_lists_vacancies(user_vacancy_list)
-            user_vacancy_list = get_vacancies_instances(user_vacancy_list_dict)
+            user_vacancy_list = to_vacancy_from_dict(user_vacancy_list_dict)
 
     # Применение фильтра по ключевому слову к вакансиям
     filtered_user_vacancy_list = filtered_vacancies(user_vacancy_list)
