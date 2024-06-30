@@ -45,6 +45,7 @@ def get_numbers_vacancies(vacancies: list[Vacancy]) -> list[Vacancy]:
 
     if numbers > len(vacancies):
         print(f'Всего найдено {len(vacancies)} вакансий.\n')
+    print('\n')
 
     return [(vacancies[i]) for i in range(len(vacancies)) if i < numbers]
 
@@ -74,6 +75,11 @@ def user_interaction():
     """
     Функция для взаимодействия с пользователем
     """
+    # Удаление вакансий из предыдущих поисков
+    json_file = WorkFileVacancies()
+    delete_vacancy = input('Удалить историю предыдущих поисков вакансий? да/нет : \n').lower()
+    if delete_vacancy in ('да', 'yes', 'y', 'д'):
+        json_file.del_vacancies()
 
     user_vacancy = input('Введите ключевое слово  для поиска профессии на сайте hh.ru: \n').lower()
     # Создание экземпляра класса для работы с API сайтов с вакансиями
@@ -86,11 +92,11 @@ def user_interaction():
     user_vacancy_list = get_vacancies_instances(vacancies_list)
 
     # Загрузка данных из предыдущих поисков
-    json_file = WorkFileVacancies()
-    use_history = input('Использовать историю предыдущих поисков вакансий? да/нет : \n').lower()
-    if use_history in ('да', 'yes', 'y', 'д'):
-        user_vacancy_list_dict = json_file.merging_lists_vacancies(user_vacancy_list)
-        user_vacancy_list = get_vacancies_instances(user_vacancy_list_dict)
+    if delete_vacancy not in ('да', 'yes', 'y', 'д'):
+        use_history = input('Использовать историю предыдущих поисков вакансий? да/нет : \n').lower()
+        if use_history in ('да', 'yes', 'y', 'д'):
+            user_vacancy_list_dict = json_file.merging_lists_vacancies(user_vacancy_list)
+            user_vacancy_list = get_vacancies_instances(user_vacancy_list_dict)
 
     # Применение фильтра по ключевому слову к вакансиям
     filtered_user_vacancy_list = filtered_vacancies(user_vacancy_list)
@@ -110,8 +116,3 @@ def user_interaction():
     # Выводит количество вакансий для просмотра
     top_n_vacancy = get_numbers_vacancies(filtered_user_vacancy_list)
     [print(vacancy) for vacancy in top_n_vacancy]
-
-    delete_vacancy = input('Удалить информацию о вакансиях? да/нет : \n').lower()
-    if delete_vacancy in ('да', 'yes', 'y', 'д'):
-        json_file.del_vacancies()
-
