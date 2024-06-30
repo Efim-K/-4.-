@@ -32,6 +32,10 @@ class Vacancy:
         self.__responsibility = self.validate_field_str(responsibility)
 
     @property
+    def pk(self):
+        return self.__pk
+
+    @property
     def name(self):
         return self.__name
 
