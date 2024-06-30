@@ -86,7 +86,8 @@ class Vacancy:
         Вывод пользователю информации о вакансии
         """
         salary = f'Зарплата: от {self.__salary_from} до {self.__salary_to} {self.__currency}'
-        return (f'Должность: {self.__name}\n'
+        return (f'id: {self.__pk}\n'
+                f'Должность: {self.__name}\n'
                 f'Дата публикации: {self.__published_at}\n'
                 f'Ссылка на вакансию: {self.__alternate_url}\n'
                 f'Город: {self.__area}\n'
