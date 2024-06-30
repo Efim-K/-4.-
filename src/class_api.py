@@ -12,7 +12,7 @@ class API(ABC):
     """
 
     @abstractmethod
-    def load_vacancies(self, *args, **kwargs):
+    def load_vacancies(self, *args) -> list[dict]:
         pass
 
 
@@ -21,11 +21,11 @@ class HeadHunterAPI(API):
     Класс для работы с API HeadHunter
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.__url = HH_URL
         self.__params = {'text': '', 'search_field': 'name', 'page': 0, 'per_page': 100}
 
-    def load_vacancies(self, user_keyword):
+    def load_vacancies(self, user_keyword: str) -> list[dict]:
         """
         Получение списка вакансий в формате json
         """
@@ -48,5 +48,8 @@ class HeadHunterAPI(API):
         return vacancies
 
     @staticmethod
-    def __check_status(response):
+    def __check_status(response) -> bool:
+        """"
+        Проверка статуса запроса url
+        """
         return response.status_code == 200
