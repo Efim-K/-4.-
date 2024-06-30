@@ -9,15 +9,15 @@ from src.utils import get_vacancies_instances
 class VacanciesABC(ABC):
 
     @abstractmethod
-    def read_vacancies(self, *args, **kwargs):
+    def read_vacancies(self) -> json:
         pass
 
     @abstractmethod
-    def save_vacancies(self, *args, **kwargs):
+    def save_vacancies(self, *args, **kwargs) -> None:
         pass
 
     @abstractmethod
-    def del_vacancies(self, *args, **kwargs):
+    def del_vacancies(self) -> None:
         pass
 
 
@@ -34,8 +34,8 @@ class WorkFileVacancies(VacanciesABC):
             with open(FILE_PATH_JSON, "r", encoding="utf8") as f:
                 return json.load(f)
         except FileNotFoundError:
-            with open(FILE_PATH_JSON, "w", encoding="utf8") as f:
-                pass
+            with open(FILE_PATH_JSON, "w+", encoding="utf8"):
+                return []
 
     def save_vacancies(self, vacancies: list[Vacancy]) -> None:
         """
@@ -59,5 +59,5 @@ class WorkFileVacancies(VacanciesABC):
         """
         Удаление данных из файла
         """
-        with open(FILE_PATH_JSON, "w") as f:
+        with open(FILE_PATH_JSON, "w"):
             pass
